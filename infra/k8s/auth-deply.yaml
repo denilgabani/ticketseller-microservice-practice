@@ -11,9 +11,10 @@ spec:
     metadata:
       labels:
         app: auth
-    containers:
-      - name: auth
-        image: denilgabani/auth
+    spec:
+      containers:
+        - name: auth
+          image: denilgabani/auth
 
 ---
 apiVersion: v1

@@ -1,13 +1,13 @@
 # Base Image
-FROM node:alpine
+FROM node:16-alpine
 
 #Wroking directory
 WORKDIR /app
 
 #operations
-COPY package.json ./
+COPY ./package.json ./
 RUN npm install
 COPY ./ ./
 
 #startup commad
-CMD ['npm', 'start']
+CMD ["npm", "start"]
