@@ -13,7 +13,7 @@ router.post(
       .isLength({ min: 6, max: 16 })
       .withMessage("Please enter valid password of legnth between 6 to 16"),
   ],
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -21,7 +21,7 @@ router.post(
     }
 
     const { email, password } = req.body;
-    console.log(errors.array());
+
     res.status(200).send({});
   }
 );
