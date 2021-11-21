@@ -4,6 +4,7 @@ import { User } from "../models/User";
 import { BadRequestError } from "../error/badRequestError";
 import { RequestValidationError } from "../error/requestValidationError";
 import jwt from "jsonwebtoken";
+import { requestValidator } from "../middleware/validator";
 
 const router = Router();
 
@@ -16,14 +17,9 @@ router.post(
       .isLength({ min: 6, max: 16 })
       .withMessage("Please enter valid password of legnth between 6 to 16"),
   ],
+  requestValidator,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const errors = validationResult(req);
-
-      if (!errors.isEmpty()) {
-        return next(new RequestValidationError(errors.array()));
-      }
-
       const { email, password } = req.body;
 
       const userExist = await User.findOne({ email });
