@@ -40,4 +40,9 @@ app.use(errorHandler);
 
 // Listen on port
 const port = 4000;
-app.listen(port, () => console.log(`Listening on ${port}!!!!!!!`));
+app.listen(port, () => {
+  if (!process.env.JWT_KEY) {
+    throw new Error("JWT_KEY env variable must be defined");
+  }
+  console.log(`Listening on ${port}!!!!!!!`);
+});
