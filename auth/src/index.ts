@@ -1,3 +1,4 @@
+import cookieSession from "cookie-session";
 import express from "express";
 import dbConnect from "./config/db";
 import { NotFoundError } from "./error/notFoundError";
@@ -7,8 +8,21 @@ import { signUpRouter } from "./routes/signup";
 // Initialize express app
 const app = express();
 
+// Trusting proxy - as traffic proxying through ingress nginx so we are allowing it
+app.set("trust proxy", true);
+
 // Body parser
 app.use(express.json());
+
+// Setting cookie with signed: false (to disable encryption)
+// as jwt token itself will be encrypt and cookie encryption
+// will be different for every language so for independet microservice we are disabling it
+app.use(
+  cookieSession({
+    signed: false,
+    secure: true,
+  })
+);
 
 // Database connect
 dbConnect();
