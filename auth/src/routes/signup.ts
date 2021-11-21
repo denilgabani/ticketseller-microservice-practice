@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import { body, validationResult } from "express-validator";
 import { User } from "../../models/User";
 import { BadRequestError } from "../error/badRequestError";
@@ -15,25 +15,29 @@ router.post(
       .isLength({ min: 6, max: 16 })
       .withMessage("Please enter valid password of legnth between 6 to 16"),
   ],
-  async (req: Request, res: Response) => {
-    const errors = validationResult(req);
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const errors = validationResult(req);
 
-    if (!errors.isEmpty()) {
-      throw new RequestValidationError(errors.array());
+      if (!errors.isEmpty()) {
+        return next(new RequestValidationError(errors.array()));
+      }
+
+      const { email, password } = req.body;
+
+      const userExist = await User.findOne({ email });
+
+      if (userExist) {
+        return next(new BadRequestError("Email is already in use"));
+      }
+
+      const user = User.build({ email, password });
+      await user.save();
+
+      return res.status(201).json(user);
+    } catch (err) {
+      console.error(err);
     }
-
-    const { email, password } = req.body;
-
-    const userExist = await User.findOne({ email });
-
-    if (userExist) {
-      throw new BadRequestError("Email is already in use");
-    }
-
-    const user = User.build({ email, password });
-    await user.save();
-
-    res.status(201).send(user);
   }
 );
 

@@ -18,7 +18,7 @@ app.use(signUpRouter);
 
 // If route is not from above path
 app.all("*", async (req, res, next) => {
-  throw new NotFoundError();
+  return next(new NotFoundError());
 });
 
 // Error Handler - need to add after all routes have been added so error from routes will use this middleware
