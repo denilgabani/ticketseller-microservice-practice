@@ -3,6 +3,7 @@ import express from "express";
 import dbConnect from "./config/db";
 import { NotFoundError } from "./error/notFoundError";
 import errorHandler from "./middleware/errorHandler";
+import { signInRouter } from "./routes/signin";
 import { signUpRouter } from "./routes/signup";
 
 // Initialize express app
@@ -29,7 +30,7 @@ dbConnect();
 
 // Routes
 app.use(signUpRouter);
-
+app.use(signInRouter);
 // If route is not from above path
 app.all("*", async (req, res, next) => {
   return next(new NotFoundError());

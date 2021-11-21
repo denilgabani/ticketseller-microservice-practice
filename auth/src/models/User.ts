@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Password } from "../src/utils/password";
+import { Password } from "../utils/password";
 
 //An interface that describes the properties
 // needed to create a new User
@@ -21,16 +21,28 @@ interface UserDoc extends mongoose.Document {
   password: string;
 }
 
-const UserSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: [true, "Please provide your email"],
+const UserSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+      required: [true, "Please provide your email"],
+    },
+    password: {
+      type: String,
+      required: [true, "Please provide you password"],
+    },
   },
-  password: {
-    type: String,
-    required: [true, "Please provide you password"],
-  },
-});
+  {
+    toJSON: {
+      transform(doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.password;
+        delete ret.__v;
+      },
+    },
+  }
+);
 
 UserSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
