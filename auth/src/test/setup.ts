@@ -1,14 +1,19 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 import { app } from "../app";
 
 let mongo: any;
+let con: any;
 
 beforeAll(async () => {
-  mongo = new MongoMemoryServer();
+  // Environment variable setup for test cases
+  process.env.JWT_KEY = "thisistestjwtsecret";
+
+  mongo = await MongoMemoryServer.create({ binary: { version: "4.2.6" } });
+
   const mongoUri = mongo.getUri();
 
-  await mongoose.connect(mongoUri);
+  con = await mongoose.connect(mongoUri);
 });
 
 beforeEach(async () => {
@@ -20,6 +25,10 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
-  await mongo.stop();
-  await mongoose.connection.close();
+  if (mongo) {
+    await mongo.stop();
+  }
+  if (con) {
+    await mongoose.connection.close();
+  }
 });
