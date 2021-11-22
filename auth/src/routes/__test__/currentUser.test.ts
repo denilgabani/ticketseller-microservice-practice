@@ -15,3 +15,10 @@ it("respond with details of current user signed in", async () => {
 
   expect(response.body.currentUser.email).toEqual("test@test.com");
 });
+
+it("respond with null if user is not authenticated", async () => {
+  const response = await request(app)
+    .get("/api/users/currentuser")
+    .send()
+    .expect(401);
+});
