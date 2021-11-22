@@ -48,3 +48,21 @@ it("returns 400 when email or password or both is not provided", async () => {
 
   return request(app).post("/api/users/signup").send({}).expect(400);
 });
+
+it("returns 400 when account is already registered with provided email", async () => {
+  await request(app)
+    .post("/api/users/signup")
+    .send({
+      email: "test@test.com",
+      password: "123456",
+    })
+    .expect(201);
+
+  return request(app)
+    .post("/api/users/signup")
+    .send({
+      email: "test@test.com",
+      password: "123456",
+    })
+    .expect(400);
+});
