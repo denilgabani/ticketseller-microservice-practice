@@ -3,7 +3,7 @@ import { NotAuthorizedError } from "../error/notAuthorizedError";
 
 export const authorize = (req: Request, res: Response, next: NextFunction) => {
   if (!req.currentUser) {
-    return next(new NotAuthorizedError());
+    return next();
   }
 
   next();
