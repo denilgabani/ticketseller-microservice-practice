@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
 import jwt from "jsonwebtoken";
-import { authorize } from "../middleware/authorize";
-import { currentUser } from "../middleware/currentUser";
+import { authorize, currentUser } from "@dgticketseller/common";
 
 const router = Router();
 router.get(

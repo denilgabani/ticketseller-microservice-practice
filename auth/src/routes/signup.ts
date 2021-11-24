@@ -1,10 +1,13 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { body, validationResult } from "express-validator";
 import { User } from "../models/User";
-import { BadRequestError } from "../error/badRequestError";
-import { RequestValidationError } from "../error/requestValidationError";
+import {
+  BadRequestError,
+  RequestValidationError,
+  requestValidator,
+} from "@dgticketseller/common";
+
 import jwt from "jsonwebtoken";
-import { requestValidator } from "../middleware/validator";
 
 const router = Router();
 
