@@ -1,6 +1,7 @@
 import cookieSession from "cookie-session";
 import express from "express";
 import { NotFoundError, errorHandler } from "@dgticketseller/common";
+import { createTicketRouter } from "./routes/new";
 
 // Initialize express app
 const app = express();
@@ -22,6 +23,7 @@ app.use(
 );
 
 // Routes
+app.use(createTicketRouter);
 
 // If route is not from above path
 app.all("*", async (req, res, next) => {
