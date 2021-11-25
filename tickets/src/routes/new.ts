@@ -1,6 +1,7 @@
 import { authorize, requestValidator } from "@dgticketseller/common";
 import { Request, Response, Router } from "express";
 import { body } from "express-validator";
+import { Ticket } from "../models/Test";
 const router = Router();
 
 router.post(
@@ -14,7 +15,17 @@ router.post(
   ],
   requestValidator,
   async (req: Request, res: Response) => {
-    res.status(200).send({});
+    const { title, price } = req.body;
+
+    const ticket = Ticket.build({
+      title,
+      price,
+      userId: req.currentUser!.id,
+    });
+
+    await ticket.save();
+
+    res.status(201).send(ticket);
   }
 );
 
