@@ -1,6 +1,10 @@
 import cookieSession from "cookie-session";
 import express from "express";
-import { NotFoundError, errorHandler } from "@dgticketseller/common";
+import {
+  NotFoundError,
+  errorHandler,
+  currentUser,
+} from "@dgticketseller/common";
 import { createTicketRouter } from "./routes/new";
 
 // Initialize express app
@@ -21,6 +25,9 @@ app.use(
     secure: process.env.NODE_ENV !== "test",
   })
 );
+
+//if user is signed in then currentUser will set req.currentUser
+app.use(currentUser);
 
 // Routes
 app.use(createTicketRouter);

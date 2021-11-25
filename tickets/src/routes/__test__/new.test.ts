@@ -6,7 +6,9 @@ it("must handle router /api/tickets/new", async () => {
 
   expect(response.statusCode).not.toEqual(404);
 });
-it("can only allow to access if user is signed in", async () => {});
+it("can only allow to access if user is signed in", async () => {
+  await request(app).post("/api/tickets/new").send({}).expect(401);
+});
 it("returns an error if invalid title is provided", async () => {});
 it("returns an error if invalid price is provided", async () => {});
 it("creates a ticket with valid inputs", async () => {});
