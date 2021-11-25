@@ -16,8 +16,6 @@ export async function getServerSideProps(context) {
 
   const { data } = await client.get("/api/users/currentuser");
 
-  console.log(data);
-
   return {
     props: data,
   };
