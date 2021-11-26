@@ -1,11 +1,14 @@
 import request from "supertest";
 import { app } from "../app";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 export const signIn = () => {
+  // Randomly generate user id every time siginIn() calls
+  const id = new mongoose.Types.ObjectId().toHexString();
   // Define a payload for jwt
   const payload = {
-    id: "619f21a3a0651c3e94c4e985",
+    id: id,
     email: "test@test.com",
   };
 
