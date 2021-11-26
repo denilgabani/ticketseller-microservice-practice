@@ -6,6 +6,8 @@ import {
   currentUser,
 } from "@dgticketseller/common";
 import { createTicketRouter } from "./routes/new";
+import { showTicketRouter } from "./routes/show";
+import { listTicketRouter } from "./routes/list";
 
 // Initialize express app
 const app = express();
@@ -31,6 +33,8 @@ app.use(currentUser);
 
 // Routes
 app.use(createTicketRouter);
+app.use(showTicketRouter);
+app.use(listTicketRouter);
 
 // If route is not from above path
 app.all("*", async (req, res, next) => {
