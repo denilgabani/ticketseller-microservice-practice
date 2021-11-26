@@ -32,6 +32,77 @@ it("returns 401 if user who want to change ticket is not signed in", async () =>
     })
     .expect(401);
 });
-it("returns 401 if user is not the owner of existing ticket", async () => {});
-it("returns 400 if updated title or price of ticket is invalid", async () => {});
-it("updates the ticket with provided title and price", async () => {});
+it("returns 401 if user is not the owner of existing ticket", async () => {
+  const response = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", signIn())
+    .send({
+      title: "testttt",
+      price: 10,
+    })
+    .expect(201);
+
+  await request(app)
+    .put(`/api/tickets/${response.body.id}`)
+    .set("Cookie", signIn())
+    .send({
+      title: "updated ticket",
+      price: 20,
+    })
+    .expect(401);
+});
+it("returns 400 if updated title or price of ticket is invalid", async () => {
+  const cookie = signIn();
+  const response = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie)
+    .send({
+      title: "testttt",
+      price: 10,
+    })
+    .expect(201);
+
+  await request(app)
+    .put(`/api/tickets/${response.body.id}`)
+    .set("Cookie", cookie)
+    .send({
+      title: "",
+      price: 20,
+    })
+    .expect(400);
+
+  await request(app)
+    .put(`/api/tickets/${response.body.id}`)
+    .set("Cookie", cookie)
+    .send({
+      title: "Update ticket",
+      price: -20,
+    })
+    .expect(400);
+});
+it("updates the ticket with provided title and price", async () => {
+  const cookie = signIn();
+  const response = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie)
+    .send({
+      title: "testttt",
+      price: 10,
+    })
+    .expect(201);
+
+  const updatedTitle = "Updated ticket";
+  const updatedPrice = 500;
+
+  const updatedResponse = await request(app)
+    .put(`/api/tickets/${response.body.id}`)
+    .set("Cookie", cookie)
+    .send({
+      title: updatedTitle,
+      price: updatedPrice,
+    })
+    .expect(200);
+
+  expect(updatedResponse.body.title).toEqual(updatedTitle);
+  expect(updatedResponse.body.price).toEqual(updatedPrice);
+});

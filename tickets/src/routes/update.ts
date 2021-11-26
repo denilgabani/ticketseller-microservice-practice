@@ -1,5 +1,11 @@
-import { authorize, NotFoundError } from "@dgticketseller/common";
+import {
+  authorize,
+  NotAuthorizedError,
+  NotFoundError,
+  requestValidator,
+} from "@dgticketseller/common";
 import express, { NextFunction, Request, Response } from "express";
+import { body } from "express-validator";
 import { Ticket } from "../models/Test";
 
 const router = express.Router();
@@ -7,12 +13,34 @@ const router = express.Router();
 router.put(
   "/api/tickets/:id",
   authorize,
+  [
+    body("title")
+      .trim()
+      .notEmpty()
+      .withMessage("Please provide the title of ticket"),
+    body("price")
+      .isFloat({ gt: 0 })
+      .withMessage("Price should be greater than 0"),
+  ],
+  requestValidator,
   async (req: Request, res: Response, next: NextFunction) => {
     const ticket = await Ticket.findById(req.params.id);
     if (!ticket) {
       return next(new NotFoundError());
     }
-    res.status(200).send({});
+
+    if (ticket.userId !== req.currentUser!.id) {
+      return next(new NotAuthorizedError());
+    }
+
+    ticket.set({
+      title: req.body.title,
+      price: req.body.price,
+    });
+
+    await ticket.save();
+
+    res.status(200).send(ticket);
   }
 );
 
