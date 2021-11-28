@@ -3,6 +3,8 @@ import { app } from "../../app";
 import { Ticket } from "../../models/Test";
 import { signIn } from "../../test/signInHelper";
 
+jest.mock("../../NatsWrapper");
+
 it("must handle router /api/tickets", async () => {
   const response = await request(app).post("/api/tickets").send({});
 
