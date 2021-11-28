@@ -1,6 +1,8 @@
-import { OrderStatus } from "@dgticketseller/common";
 import mongoose from "mongoose";
 import { TicketDoc } from "./Ticket";
+
+import { OrderStatus } from "@dgticketseller/common";
+export { OrderStatus };
 
 // interface used to define
 // Attribute we can passed to create document in model

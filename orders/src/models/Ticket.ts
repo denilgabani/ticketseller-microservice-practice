@@ -1,3 +1,4 @@
+import { OrderStatus } from "@dgticketseller/common";
 import mongoose from "mongoose";
 
 // interface used to define
@@ -11,6 +12,7 @@ interface TicketAttr {
 export interface TicketDoc {
   title: string;
   price: number;
+  isReserved(): Promise<boolean>;
 }
 
 // An interface that describes the property
@@ -19,7 +21,7 @@ interface TicketModel extends mongoose.Model<TicketDoc> {
   build(attrs: TicketAttr): TicketDoc;
 }
 
-const TickeSchema = new mongoose.Schema(
+const TicketSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -41,10 +43,27 @@ const TickeSchema = new mongoose.Schema(
   }
 );
 
-TickeSchema.statics.build = (attrs: TicketAttr) => {
+TicketSchema.statics.build = (attrs: TicketAttr) => {
   return new Ticket(attrs);
 };
 
-const Ticket = mongoose.model<TicketDoc, TicketModel>("Ticket", TickeSchema);
+TicketSchema.methods.isReserved = async function () {
+  // If any one order already exist in database with given ticket and status is other than
+  // order cancelled then that ticket is already reserved by another order
+  const existingOrder = await Ticket.findOne({
+    ticket: this,
+    status: {
+      $in: [
+        OrderStatus.Created,
+        OrderStatus.AwaitingPayment,
+        OrderStatus.Complete,
+      ],
+    },
+  });
+
+  return !!existingOrder;
+};
+
+const Ticket = mongoose.model<TicketDoc, TicketModel>("Ticket", TicketSchema);
 
 export { Ticket };
