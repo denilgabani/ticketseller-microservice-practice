@@ -2,7 +2,7 @@ import { authorize, requestValidator } from "@dgticketseller/common";
 import { Request, Response, Router } from "express";
 import { body } from "express-validator";
 import { TicketCreatedPublisher } from "../events/publishers/TicketCreatedPublisher";
-import { Ticket } from "../models/Test";
+import { Ticket } from "../models/Ticket";
 import { natsWrapper } from "../NatsWrapper";
 const router = Router();
 

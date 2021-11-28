@@ -7,7 +7,7 @@ import {
 import express, { NextFunction, Request, Response } from "express";
 import { body } from "express-validator";
 import { TicketUpdatedPublisher } from "../events/publishers/TicketUpdatedPublisher";
-import { Ticket } from "../models/Test";
+import { Ticket } from "../models/Ticket";
 import { natsWrapper } from "../NatsWrapper";
 
 const router = express.Router();

@@ -1,6 +1,6 @@
 import { NotFoundError } from "@dgticketseller/common";
 import express, { NextFunction, Request, Response } from "express";
-import { Ticket } from "../models/Test";
+import { Ticket } from "../models/Ticket";
 
 const router = express.Router();
 

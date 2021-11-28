@@ -1,6 +1,6 @@
 import request from "supertest";
 import { app } from "../../app";
-import { Ticket } from "../../models/Test";
+import { Ticket } from "../../models/Ticket";
 import { signIn } from "../../test/signInHelper";
 import { natsWrapper } from "../../NatsWrapper";
 
