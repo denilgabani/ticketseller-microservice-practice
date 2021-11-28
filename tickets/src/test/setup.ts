@@ -5,6 +5,8 @@ import { app } from "../app";
 let mongo: any;
 let con: any;
 
+jest.mock("../NatsWrapper");
+
 beforeAll(async () => {
   // Environment variable setup for test cases
   process.env.JWT_KEY = "thisistestjwtsecret";
@@ -17,6 +19,7 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
+  jest.clearAllMocks();
   const collections = await mongoose.connection.db.collections();
 
   for (let collection of collections) {
