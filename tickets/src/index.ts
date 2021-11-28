@@ -13,6 +13,18 @@ const start = async () => {
     throw new Error("MONGO_URI env variable must be defined");
   }
 
+  if (!process.env.NATS_CLUSTER_ID) {
+    throw new Error("NATS_CLUSTER_ID env variable must be defined");
+  }
+
+  if (!process.env.NATS_CLIENT_ID) {
+    throw new Error("NATS_CLIENT_ID env variable must be defined");
+  }
+
+  if (!process.env.NATS_URI) {
+    throw new Error("NATS_URI env variable must be defined");
+  }
+
   // Nats Connect
   natsConnect();
 

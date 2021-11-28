@@ -2,7 +2,11 @@ import { natsWrapper } from "../NatsWrapper";
 
 const natsConnect = async () => {
   try {
-    await natsWrapper.connect("ticketseller", "asdf", "http://nats-srv:4222");
+    await natsWrapper.connect(
+      process.env.NATS_CLUSTER_ID!,
+      process.env.NATS_CLIENT_ID!,
+      process.env.NATS_URI!
+    );
 
     natsWrapper.client.on("close", () => {
       console.log("Connection to NATS closed");
