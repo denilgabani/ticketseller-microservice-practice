@@ -1,7 +1,9 @@
 import { authorize, requestValidator } from "@dgticketseller/common";
 import { Request, Response, Router } from "express";
 import { body } from "express-validator";
+import { TicketCreatedPublisher } from "../events/publishers/TicketCreatedPublisher";
 import { Ticket } from "../models/Test";
+import { natsWrapper } from "../NatsWrapper";
 const router = Router();
 
 router.post(
@@ -24,6 +26,13 @@ router.post(
     });
 
     await ticket.save();
+
+    new TicketCreatedPublisher(natsWrapper.client).publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
+    });
 
     res.status(201).send(ticket);
   }
