@@ -3,13 +3,17 @@ import {
   authorize,
   BadRequestError,
   NotFoundError,
+  OrderStatus,
   requestValidator,
 } from "@dgticketseller/common";
 import { body } from "express-validator";
 import mongoose from "mongoose";
 import { Ticket } from "../models/Ticket";
+import { Order } from "../models/Order";
 
 const router = express.Router();
+
+const EXPIRATION_ORDER_TIME_WINDOW = 15 * 60; //15 Minutes
 
 router.post(
   "/api/orders",
@@ -41,7 +45,25 @@ router.post(
       return next(new BadRequestError("Ticket is already reserved"));
     }
 
-    res.status(201).send({});
+    // Calculate an expiration date of this order
+    const expiration = new Date();
+    expiration.setSeconds(
+      expiration.getSeconds() + EXPIRATION_ORDER_TIME_WINDOW
+    );
+
+    //Build the order and save it to database
+    const order = Order.build({
+      userId: req.currentUser!.id,
+      status: OrderStatus.Created,
+      expiresAt: expiration,
+      ticket: ticket,
+    });
+
+    await order.save();
+
+    //Publish an event that order was created
+
+    res.status(201).send(order);
   }
 );
 

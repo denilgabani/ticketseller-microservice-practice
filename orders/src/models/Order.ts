@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import { TicketDoc } from "./Ticket";
 
 import { OrderStatus } from "@dgticketseller/common";
-export { OrderStatus };
 
 // interface used to define
 // Attribute we can passed to create document in model
@@ -14,7 +13,7 @@ interface OrderAttrs {
 }
 
 // Interface used for defining document which will return mongoose from db
-interface OrderDoc {
+interface OrderDoc extends mongoose.Document {
   userId: string;
   status: OrderStatus;
   expiresAt: Date;

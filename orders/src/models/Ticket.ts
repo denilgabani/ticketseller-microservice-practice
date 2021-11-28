@@ -9,7 +9,7 @@ interface TicketAttr {
 }
 
 // Interface used for defining document which will return mongoose from db
-export interface TicketDoc {
+export interface TicketDoc extends mongoose.Document {
   title: string;
   price: number;
   isReserved(): Promise<boolean>;
