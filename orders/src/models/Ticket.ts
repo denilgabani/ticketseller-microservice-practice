@@ -1,5 +1,6 @@
 import { OrderStatus } from "@dgticketseller/common";
 import mongoose from "mongoose";
+import { Order } from "./Order";
 
 // interface used to define
 // Attribute we can passed to create document in model
@@ -50,7 +51,7 @@ TicketSchema.statics.build = (attrs: TicketAttr) => {
 TicketSchema.methods.isReserved = async function () {
   // If any one order already exist in database with given ticket and status is other than
   // order cancelled then that ticket is already reserved by another order
-  const existingOrder = await Ticket.findOne({
+  const existingOrder = await Order.findOne({
     ticket: this,
     status: {
       $in: [

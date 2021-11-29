@@ -23,9 +23,9 @@ router.post(
       .not()
       .isEmpty()
       .custom((input: string) => {
-        mongoose.Types.ObjectId.isValid(input);
+        return mongoose.Types.ObjectId.isValid(input);
       })
-      .withMessage("Provide a ticketId"),
+      .withMessage("Provide a valid ticketId"),
   ],
   requestValidator,
   async (req: Request, res: Response, next: NextFunction) => {
@@ -41,6 +41,7 @@ router.post(
     // Check if given order of ticket that ticket is not reserved by another request of order
 
     const isReserved = await ticket.isReserved();
+
     if (isReserved) {
       return next(new BadRequestError("Ticket is already reserved"));
     }
