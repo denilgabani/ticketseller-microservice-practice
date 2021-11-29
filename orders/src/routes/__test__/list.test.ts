@@ -40,7 +40,11 @@ it("shows the orders of particular user", async () => {
     .expect(201);
   // Get list of orders for User2
 
-  const response = await request(app).get("/api/orders").send().expect(200);
+  const response = await request(app)
+    .get("/api/orders")
+    .set("Cookie", userTwo)
+    .send()
+    .expect(200);
 
   // check if orders is really from user2
   expect(response.body.length).toEqual(2);
