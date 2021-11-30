@@ -4,6 +4,7 @@ import request from "supertest";
 import { app } from "../../app";
 import { Order } from "../../models/Order";
 import { Ticket } from "../../models/Ticket";
+import { natsWrapper } from "../../NatsWrapper";
 import { signIn } from "../../test/signInHelper";
 
 it("returns an error if the ticket is not in database", async () => {
@@ -60,4 +61,21 @@ it("successfully reserves the ticket", async () => {
     .expect(201);
 });
 
-it.todo("Publish an event OrderCreated");
+it("Publish an event OrderCreated", async () => {
+  const ticket = Ticket.build({
+    title: "Test Ticket",
+    price: 100,
+  });
+
+  await ticket.save();
+
+  await request(app)
+    .post("/api/orders")
+    .set("Cookie", signIn())
+    .send({
+      ticketId: ticket.id,
+    })
+    .expect(201);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
+});
