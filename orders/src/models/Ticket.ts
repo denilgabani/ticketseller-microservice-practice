@@ -5,6 +5,7 @@ import { Order } from "./Order";
 // interface used to define
 // Attribute we can passed to create document in model
 interface TicketAttr {
+  id: string;
   title: string;
   price: number;
 }
@@ -45,7 +46,11 @@ const TicketSchema = new mongoose.Schema(
 );
 
 TicketSchema.statics.build = (attrs: TicketAttr) => {
-  return new Ticket(attrs);
+  return new Ticket({
+    _id: attrs.id,
+    title: attrs.title,
+    price: attrs.price,
+  });
 };
 
 TicketSchema.methods.isReserved = async function () {
