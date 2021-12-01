@@ -1,5 +1,6 @@
 import { OrderStatus } from "@dgticketseller/common";
 import mongoose from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { Order } from "./Order";
 
 // interface used to define
@@ -14,6 +15,7 @@ interface TicketAttr {
 export interface TicketDoc extends mongoose.Document {
   title: string;
   price: number;
+  version: number;
   isReserved(): Promise<boolean>;
 }
 
@@ -44,6 +46,9 @@ const TicketSchema = new mongoose.Schema(
     },
   }
 );
+
+TicketSchema.set("versionKey", "version");
+TicketSchema.plugin(updateIfCurrentPlugin);
 
 TicketSchema.statics.build = (attrs: TicketAttr) => {
   return new Ticket({
