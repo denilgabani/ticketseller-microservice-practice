@@ -1,6 +1,9 @@
 import { app } from "./app";
 import { dbConnect } from "./config/db";
 import { natsConnect } from "./config/natsConnect";
+import { TicketCreatedListener } from "./events/listeners/TicketCreatedListener";
+import { TicketUpdatedListener } from "./events/listeners/TicketUpdatedListener";
+import { natsWrapper } from "./NatsWrapper";
 
 // Listen on port
 const port = 4000;
@@ -27,6 +30,10 @@ const start = async () => {
 
   // Nats Connect
   natsConnect();
+
+  // Start Listener after connecting to NATS
+  new TicketCreatedListener(natsWrapper.client).listen();
+  new TicketUpdatedListener(natsWrapper.client).listen();
 
   // Database connect
   dbConnect();
