@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 // TicketAttr interface used to define
 // Attribute we can passed to create document in model
@@ -13,6 +14,7 @@ interface TicketDoc extends mongoose.Document {
   title: string;
   price: number;
   userId: string;
+  version: string;
 }
 
 // An interface that describes the property
@@ -45,6 +47,9 @@ const TicketSchema = new mongoose.Schema(
     },
   }
 );
+
+TicketSchema.set("versionKey", "version");
+TicketSchema.plugin(updateIfCurrentPlugin);
 
 TicketSchema.statics.build = (attrs: TicketAttrs) => {
   return new Ticket(attrs);
