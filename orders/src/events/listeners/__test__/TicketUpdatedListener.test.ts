@@ -52,3 +52,15 @@ it("acknowledge that ticket is updated", async () => {
 
   expect(msg.ack).toHaveBeenCalled();
 });
+
+it("ack function is not called if event has not correct version sequence", async () => {
+  const { listener, ticket, data, msg } = await setup();
+
+  data.version = 10;
+
+  try {
+    await listener.onMessage(data, msg);
+  } catch (err) {}
+
+  expect(msg.ack).not.toHaveBeenCalled();
+});
