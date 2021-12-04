@@ -42,5 +42,5 @@ it("acknowledge after creating the ticket", async () => {
   //call onMessage using TicketCreatedListener instance by passing data + message
   await listener.onMessage(data, msg);
   //   Assertion statement to check ack function is called
-  expect(msg.ack).not.toHaveBeenCalled();
+  expect(msg.ack).toHaveBeenCalled();
 });
