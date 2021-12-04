@@ -20,6 +20,7 @@ it("returns an error if the ticket is not in database", async () => {
 
 it("returns an error if ticket from current order is already reserved by other order", async () => {
   const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: "Test Ticket",
     price: 100,
   });
@@ -46,6 +47,7 @@ it("returns an error if ticket from current order is already reserved by other o
 
 it("successfully reserves the ticket", async () => {
   const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: "Test Ticket",
     price: 100,
   });
@@ -63,6 +65,7 @@ it("successfully reserves the ticket", async () => {
 
 it("Publish an event OrderCreated", async () => {
   const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: "Test Ticket",
     price: 100,
   });

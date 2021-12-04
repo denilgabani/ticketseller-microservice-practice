@@ -2,10 +2,12 @@ import request from "supertest";
 import { app } from "../../app";
 import { Ticket } from "../../models/Ticket";
 import { signIn } from "../../test/signInHelper";
+import mongoose from "mongoose";
 
 it("returns order with given orderId", async () => {
   // Create a ticket
   const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: "Test ticket",
     price: 50,
   });
@@ -36,6 +38,7 @@ it("returns order with given orderId", async () => {
 it("returns Not Autorized if one user try to access another user's order", async () => {
   // Create a ticket
   const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: "Test ticket",
     price: 50,
   });

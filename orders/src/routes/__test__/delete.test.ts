@@ -5,10 +5,12 @@ import { Order } from "../../models/Order";
 import { Ticket } from "../../models/Ticket";
 import { natsWrapper } from "../../NatsWrapper";
 import { signIn } from "../../test/signInHelper";
+import mongoose from "mongoose";
 
 it("changes the status of order to cancelled", async () => {
   // Create a ticket
   const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: "Test ticket",
     price: 50,
   });
@@ -42,6 +44,7 @@ it("changes the status of order to cancelled", async () => {
 it("publish an even when order is cancelled", async () => {
   // Create a ticket
   const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: "Test ticket",
     price: 50,
   });

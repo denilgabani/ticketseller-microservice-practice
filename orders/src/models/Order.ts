@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { TicketDoc } from "./Ticket";
 
 import { OrderStatus } from "@dgticketseller/common";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 // interface used to define
 // Attribute we can passed to create document in model
@@ -57,6 +58,9 @@ const OrderSchema = new mongoose.Schema(
     },
   }
 );
+
+OrderSchema.set("versionKey", "version");
+OrderSchema.plugin(updateIfCurrentPlugin);
 
 OrderSchema.statics.build = (attrs: OrderAttrs) => {
   return new Order(attrs);
