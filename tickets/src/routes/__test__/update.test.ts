@@ -161,5 +161,5 @@ it("rejects the update request of ticket if ticket is already reserved", async (
       title: "",
       price: 20,
     })
-    .expect(200);
+    .expect(400);
 });
