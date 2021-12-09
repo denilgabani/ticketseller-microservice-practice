@@ -1,6 +1,5 @@
 import { app } from "./app";
 import { dbConnect } from "./config/db";
-import { natsConnect } from "./config/natsConnect";
 import { TicketCreatedListener } from "./events/listeners/TicketCreatedListener";
 import { TicketUpdatedListener } from "./events/listeners/TicketUpdatedListener";
 import { natsWrapper } from "./NatsWrapper";
@@ -29,11 +28,29 @@ const start = async () => {
   }
 
   // Nats Connect
-  natsConnect();
+  try {
+    await natsWrapper.connect(
+      process.env.NATS_CLUSTER_ID!,
+      process.env.NATS_CLIENT_ID!,
+      process.env.NATS_URI!
+    );
 
-  // Start Listener after connecting to NATS
-  new TicketCreatedListener(natsWrapper.client).listen();
-  new TicketUpdatedListener(natsWrapper.client).listen();
+    natsWrapper.client.on("connect", () => {
+      // Start Listener after connecting to NATS
+      new TicketCreatedListener(natsWrapper.client).listen();
+      new TicketUpdatedListener(natsWrapper.client).listen();
+    });
+
+    natsWrapper.client.on("close", () => {
+      console.log("Connection to NATS closed");
+      process.exit();
+    });
+
+    process.on("SIGINT", () => natsWrapper.client.close());
+    process.on("SIGTERM", () => natsWrapper.client.close());
+  } catch (err) {
+    console.error(err);
+  }
 
   // Database connect
   dbConnect();
