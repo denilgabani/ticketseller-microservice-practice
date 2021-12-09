@@ -1,6 +1,6 @@
 import { Listener, OrderCreated, Subjects } from "@dgticketseller/common";
 import { Message } from "node-nats-streaming";
-import { expirationQueue } from "../queues/expirationQueue";
+import { expirationQueue } from "../../queues/expirationQueue";
 import { queueGroupName } from "./queueGroupName";
 
 export class OrderCreatedListener extends Listener<OrderCreated> {
@@ -14,7 +14,7 @@ export class OrderCreatedListener extends Listener<OrderCreated> {
         orderId: data.id,
       },
       {
-        delay: delay,
+        delay: 10000,
       }
     );
 

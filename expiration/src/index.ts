@@ -1,4 +1,4 @@
-import { OrderCreatedListener } from "./events/OrderCreatedListener";
+import { OrderCreatedListener } from "./events/listeners/OrderCreatedListener";
 import { natsWrapper } from "./NatsWrapper";
 
 // Listen on port
