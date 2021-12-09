@@ -37,8 +37,6 @@ const start = async () => {
 
     natsWrapper.client.on("connect", () => {
       // Start Listener after connecting to NATS
-      new TicketCreatedListener(natsWrapper.client).listen();
-      new TicketUpdatedListener(natsWrapper.client).listen();
     });
 
     natsWrapper.client.on("close", () => {
@@ -51,6 +49,9 @@ const start = async () => {
   } catch (err) {
     console.error(err);
   }
+
+  new TicketCreatedListener(natsWrapper.client).listen();
+  new TicketUpdatedListener(natsWrapper.client).listen();
 
   // Database connect
   dbConnect();

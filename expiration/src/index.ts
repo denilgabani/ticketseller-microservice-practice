@@ -24,9 +24,7 @@ const start = async () => {
       process.env.NATS_URI!
     );
 
-    natsWrapper.client.on("connect", () => {
-      new OrderCreatedListener(natsWrapper.client).listen();
-    });
+    natsWrapper.client.on("connect", () => {});
 
     natsWrapper.client.on("close", () => {
       console.log("Connection to NATS closed");
@@ -38,6 +36,7 @@ const start = async () => {
   } catch (err) {
     console.error(err);
   }
+  new OrderCreatedListener(natsWrapper.client).listen();
 };
 
 start();
