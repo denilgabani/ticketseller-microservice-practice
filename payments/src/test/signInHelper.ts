@@ -3,9 +3,9 @@ import { app } from "../app";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
-export const signIn = () => {
+export const signIn = (userId?: string) => {
   // Randomly generate user id every time siginIn() calls
-  const id = new mongoose.Types.ObjectId().toHexString();
+  const id = userId || new mongoose.Types.ObjectId().toHexString();
   // Define a payload for jwt
   const payload = {
     id: id,
