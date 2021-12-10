@@ -51,7 +51,7 @@ it("returns 400 when trying to make payment request for cancelled order", async 
 
   await request(app)
     .post("/api/payments")
-    .set("Cookie", signIn())
+    .set("Cookie", signIn(userId))
     .send({
       orderId: order.id,
       token: "asdfg",
