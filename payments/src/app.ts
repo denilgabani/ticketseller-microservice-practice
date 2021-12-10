@@ -5,6 +5,7 @@ import {
   errorHandler,
   currentUser,
 } from "@dgticketseller/common";
+import { newPaymentRouter } from "./routes/new";
 
 // Initialize express app
 const app = express();
@@ -29,6 +30,7 @@ app.use(
 app.use(currentUser);
 
 // Routes
+app.use(newPaymentRouter);
 
 // If route is not from above path
 app.all("*", async (req, res, next) => {
