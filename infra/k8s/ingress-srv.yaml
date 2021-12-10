@@ -34,6 +34,14 @@ spec:
                 port:
                   number: 4000
 
+          - path: /api/payments/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: payments-srv
+                port:
+                  number: 4000
+
           - path: /?(.*)
             pathType: Prefix
             backend:
