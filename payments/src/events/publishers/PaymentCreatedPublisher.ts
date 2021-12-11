@@ -1,3 +1,9 @@
-import { Publisher, PaymentCreatedEvent } from "@dgticketseller/common";
+import {
+  Publisher,
+  PaymentCreatedEvent,
+  Subjects,
+} from "@dgticketseller/common";
 
-export class PaymentCreatedPublisher extends Publisher<PaymentCreatedEvent> {}
+export class PaymentCreatedPublisher extends Publisher<PaymentCreatedEvent> {
+  subject: Subjects.PaymentCreated = Subjects.PaymentCreated;
+}
