@@ -9,6 +9,7 @@ import {
 import express, { NextFunction, Request, Response } from "express";
 import { body } from "express-validator";
 import { Order } from "../models/Order";
+import { Payment } from "../models/Payment";
 import { stripe } from "../stripe";
 
 const router = express.Router();
@@ -39,11 +40,18 @@ router.post(
       );
     }
 
-    await stripe.charges.create({
+    const charge = await stripe.charges.create({
       currency: "inr",
       amount: order.price * 100,
       source: token,
     });
+
+    const payment = Payment.build({
+      orderId: orderId,
+      stripeId: charge.id,
+    });
+
+    await payment.save();
 
     res.status(201).send({ success: true });
   }

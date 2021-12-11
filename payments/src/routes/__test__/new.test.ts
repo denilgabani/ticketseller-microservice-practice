@@ -5,6 +5,7 @@ import { Order } from "../../models/Order";
 import { signIn } from "../../test/signInHelper";
 import { OrderStatus } from "@dgticketseller/common";
 import { stripe } from "../../stripe";
+import { Payment } from "../../models/Payment";
 
 jest.mock("../../stripe");
 
@@ -66,6 +67,7 @@ it("returns 400 when trying to make payment request for cancelled order", async 
 
 it("returns 201 when creating a payment request", async () => {
   const userId = new mongoose.Types.ObjectId().toHexString();
+
   const order = Order.build({
     id: new mongoose.Types.ObjectId().toHexString(),
     price: 200,
@@ -90,4 +92,11 @@ it("returns 201 when creating a payment request", async () => {
   expect(chargeOptions.currency).toEqual("inr");
   expect(chargeOptions.source).toEqual("tok_visa");
   expect(chargeOptions.amount).toEqual(200 * 100);
+
+  const payment = await Payment.findOne({
+    orderId: order.id,
+  });
+
+  expect(payment?.orderId).not.toBeNull();
+  expect(payment?.stripeId).not.toBeNull();
 });
