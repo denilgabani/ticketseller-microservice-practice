@@ -9,6 +9,7 @@ import {
 import express, { NextFunction, Request, Response } from "express";
 import { body } from "express-validator";
 import { Order } from "../models/Order";
+import { stripe } from "../stripe";
 
 const router = express.Router();
 
@@ -38,7 +39,13 @@ router.post(
       );
     }
 
-    res.status(200).send({ success: true });
+    await stripe.charges.create({
+      currency: "inr",
+      amount: order.price * 100,
+      source: token,
+    });
+
+    res.status(201).send({ success: true });
   }
 );
 
