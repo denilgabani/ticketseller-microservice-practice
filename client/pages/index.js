@@ -7,7 +7,7 @@ const LandingPage = ({ currentUser }) => {
   );
 };
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context, client, currentUser) {
   return {
     props: {},
   };
