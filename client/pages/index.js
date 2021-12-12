@@ -1,6 +1,3 @@
-import axios from "axios";
-import buildClient from "../api/buildClient";
-
 const LandingPage = ({ currentUser }) => {
   console.log("Client", currentUser);
   return currentUser ? (
@@ -11,13 +8,8 @@ const LandingPage = ({ currentUser }) => {
 };
 
 export async function getServerSideProps(context) {
-  console.log("LANDING PAGEEE");
-  const client = buildClient(context);
-
-  const { data } = await client.get("/api/users/currentuser");
-
   return {
-    props: data,
+    props: {},
   };
 }
 
