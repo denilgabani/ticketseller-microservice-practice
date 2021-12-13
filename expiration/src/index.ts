@@ -27,7 +27,7 @@ const start = async () => {
     natsWrapper.client.on("connect", () => {});
 
     natsWrapper.client.on("close", () => {
-      console.log("Connection to NATS closed");
+      console.log("Connection to NATS closed!");
       process.exit();
     });
 
