@@ -33,6 +33,7 @@ const LandingPage = ({ currentUser, tickets }) => {
   );
 };
 
+//
 export async function getServerSideProps(context) {
   const client = buildClient(context);
 
