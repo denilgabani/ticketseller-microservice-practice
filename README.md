@@ -2,13 +2,15 @@
 A project to deep dive into microservices using nodejs with docker and kubernetes
 Important topics, Technologies and Tools Used:
 1. Nodejs
-2. Reactjs
-3. Docker
-4. Kubernetes
-5. NATS-Streaming as Event Bus
-6. Ingress Nginx
-7. Skaffold
-8. Build CI/CD pipeline with testcase linked to Github
+2. Typescript
+3. Reactjs
+4. Stripe
+5. Docker
+6. Kubernetes
+7. NATS-Streaming as Event Bus
+8. Ingress Nginx
+9. Skaffold
+10. Build CI/CD pipeline with testcase linked to Github
 
 ### Step by Step process to setup the project
 
